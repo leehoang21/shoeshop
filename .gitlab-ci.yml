@@ -7,3 +7,5 @@ build: # tên của job
   script:
     - echo "Building the app"
     - ls -la
+  tags:
+    - gitlab-servers # tag của runner
