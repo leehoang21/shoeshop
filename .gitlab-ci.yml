@@ -1,0 +1,9 @@
+stages:
+  - build
+  - deloy
+  - checking
+build: # tên của job
+  stage: build
+  script:
+    - echo "Building the app"
+    - ls -la
