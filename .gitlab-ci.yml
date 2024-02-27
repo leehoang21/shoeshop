@@ -6,6 +6,8 @@ build: # tên của job
   stage: build
   script:
     - echo "Building the app"
+    - whoami
+    - pwd
     - ls -la
   tags:
     - gitlab-servers # tag của runner
