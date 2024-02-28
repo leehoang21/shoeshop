@@ -19,8 +19,8 @@ build: # tên của job
     - mvn clean install
   tags:
     - gitlab-servers # tag của runner
-  only:
-    - tags # chỉ chạy khi có tag
+  # only:
+  #   - tags # chỉ chạy khi có tag
 deloy: # tên của job
   stage: deloy
   variables:
