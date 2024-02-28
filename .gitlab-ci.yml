@@ -15,6 +15,7 @@ deloy: # tên của job
   variables:
     GIT_STRATEGY: none
   script:
+    - pwd
     # chuyển file jar vào thư mục /datas/shoeshop
     - sudo cp target/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar /datas/shoeshop
     # chuyển quyền sở hữu thư mục /datas/shoeshop cho user shoeshop
