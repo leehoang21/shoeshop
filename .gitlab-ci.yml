@@ -7,10 +7,7 @@ build: # tên của job
   variables:
     GIT_STRATEGY: clone
   script:
-    - echo "Building the app"
-    - whoami
-    - pwd
-    - ls -la
+    - npm install
   tags:
     - gitlab-servers # tag của runner
 deloy: # tên của job
