@@ -17,10 +17,10 @@ deloy: # tên của job
   script:
     - pwd
     # chuyển file jar vào thư mục /datas/shoeshop
-    - sudo cp target/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar /datas/shoeshop
+    - sudo cp target/shoe-ShopingCart-0.0.1-SNAPSHOT.jar /datas/shoeshop
     # chuyển quyền sở hữu thư mục /datas/shoeshop cho user shoeshop
     - sudo chown shoeshop /datas/shoeshop
     # -c có nghĩa là sau khi chạy su shoeshop thì sẽ chạy lệnh cd /datas/shoeshop && nohup java -jar shoe-ShoppingCart-0.0.1-SNAPSHOT.jar > app.log &
-    - sudo su shoeshop -c "cd /datas/shoeshop && nohup java -jar shoe-ShoppingCart-0.0.1-SNAPSHOT.jar > app.log &"
+    - sudo su shoeshop -c "cd /datas/shoeshop && nohup java -jar shoe-ShopingCart-0.0.1-SNAPSHOT.jar > app.log &"
   tags:
     - gitlab-servers # tag của runner
