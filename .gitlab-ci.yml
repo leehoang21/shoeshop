@@ -4,10 +4,20 @@ stages:
   - checking
 build: # tên của job
   stage: build
+  variables:
+    GIT_STRATEGY: clone
   script:
     - echo "Building the app"
     - whoami
     - pwd
     - ls -la
+  tags:
+    - gitlab-servers # tag của runner
+deloy: # tên của job
+  stage: deloy
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - java -jar target/shoe-ShoppingCart-0.0.1-SNAPSHOT.jar
   tags:
     - gitlab-servers # tag của runner
