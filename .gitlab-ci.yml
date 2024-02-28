@@ -34,5 +34,5 @@ deloy: # tên của job
     - sudo su ${projectUser} -c "cd ${projectPath} && nohup java -jar ${projectJar} > app.log &"
   tags:
     - gitlab-servers # tag của runner
-  only:
-    - tags # chỉ chạy khi có tag
+  # only:
+  #   - tags # chỉ chạy khi có tag
