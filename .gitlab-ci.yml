@@ -1,3 +1,11 @@
+variables:
+  projectName: "shoe-ShopingCart"
+  projectVersion: "0.0.1-SNAPSHOT"
+  projectPort: "8081"
+  projectUser: "shoeshop"
+  projectPath: "/datas/${projectUser}"
+  projectJar: "${projectName}-${projectVersion}.jar"
+
 stages:
   - build
   - deloy
@@ -16,13 +24,11 @@ deloy: # tên của job
   variables:
     GIT_STRATEGY: none
   script:
-    # kill process java đang chạy
-    - ps -ef | grep shoe-ShopingCart-0.0.1-SNAPSHOT.jar | grep -v grep | awk '{print $2}' | xargs kill -9
     # chuyển file jar vào thư mục /datas/shoeshop
-    - sudo cp target/shoe-ShopingCart-0.0.1-SNAPSHOT.jar /datas/shoeshop
+    - sudo cp target/${projectJar} ${projectPath}
     # chuyển quyền sở hữu thư mục /datas/shoeshop cho user shoeshop
-    - sudo chown -R shoeshop /datas/shoeshop
+    - sudo chown -R ${projectUser} ${projectPath}
     # -c có nghĩa là sau khi chạy su shoeshop thì sẽ chạy lệnh cd /datas/shoeshop && nohup java -jar shoe-ShoppingCart-0.0.1-SNAPSHOT.jar > app.log &
-    - sudo su shoeshop -c "cd /datas/shoeshop && nohup java -jar shoe-ShopingCart-0.0.1-SNAPSHOT.jar > app.log &"
+    - sudo su ${projectUser} -c "cd ${projectPath} && nohup java -jar ${projectJar} > app.log &"
   tags:
     - gitlab-servers # tag của runner
