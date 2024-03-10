@@ -12,7 +12,7 @@ buildAndPush: # tên của job
   before_script:
     - docker login -u ${registry_user} -p ${registry_password} ${registry_url}
   script:
-    - docker build -t ${dockerImage} .
+    - docker build -t ${dockerImage} -f DockerFile .
     - docker push ${dockerImage}
   tags:
     - gitlab-servers # tag của runner
