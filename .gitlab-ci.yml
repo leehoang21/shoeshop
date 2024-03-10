@@ -8,8 +8,6 @@ stages:
   - deloy
 buildAndPush: # tên của job
   stage: buildAndPush
-  variables:
-    GIT_STRATEGY: clone
   # trước khi chạy lệnh docker build và docker push thì cần phải đăng nhập vào docker registry
   before_script:
     - docker login -u ${registry_user} -p ${registry_password} ${registry_url}
