@@ -1,38 +1,37 @@
 variables:
-  projectName: "shoe-ShopingCart"
-  projectVersion: "0.0.1-SNAPSHOT"
-  projectPort: "8081"
-  projectUser: "shoeshop"
-  projectPath: "/datas/${projectUser}"
-  projectJar: "${projectName}-${projectVersion}.jar"
+  #<domain>/<docker id>/<repo>:<tag + commit>
+  #docker.io/hoanglee/shoeshop:v0.0.1_afsssesds
+  dockerImage: ${registry_url}/hoanglee/${CI_PROJECT_NAME}:${CI_COMMIT_TAG}_${CI_COMMIT_SHORT_SHA}
 
 stages:
-  - build
+  - buildAndPush
   - deloy
-  - project
-  - checking
-build: # tên của job
-  stage: build
+buildAndPush: # tên của job
+  stage: buildAndPush
   variables:
     GIT_STRATEGY: clone
+  # trước khi chạy lệnh docker build và docker push thì cần phải đăng nhập vào docker registry
+  before_script:
+    - docker login -u ${registry_user} -p ${registry_password} ${registry_url}
   script:
-    - mvn clean install
+    - docker build -t ${dockerImage}
+    - docker push ${dockerImage}
   tags:
     - gitlab-servers # tag của runner
-  # only:
-  #   - tags # chỉ chạy khi có tag
-deloy: # tên của job
-  stage: deloy
-  variables:
-    GIT_STRATEGY: none
-  script:
-    # chuyển file jar vào thư mục /datas/shoeshop
-    - sudo cp target/${projectJar} ${projectPath}
-    # chuyển quyền sở hữu thư mục /datas/shoeshop cho user shoeshop
-    - sudo chown -R ${projectUser} ${projectPath}
-    # -c có nghĩa là sau khi chạy su shoeshop thì sẽ chạy lệnh cd /datas/shoeshop && nohup java -jar shoe-ShoppingCart-0.0.1-SNAPSHOT.jar > app.log &
-    - sudo su ${projectUser} -c "cd ${projectPath} && nohup java -jar ${projectJar} --server.port=${projectPort} > app.log &"
-  tags:
-    - gitlab-servers # tag của runner
-  # only:
-  #   - tags # chỉ chạy khi có tag
+  only:
+    - tags # chỉ chạy khi có tag
+# deloy: # tên của job
+#   stage: deloy
+#   variables:
+#     GIT_STRATEGY: none
+#   script:
+#     # chuyển file jar vào thư mục /datas/shoeshop
+#     - sudo cp target/${projectJar} ${projectPath}
+#     # chuyển quyền sở hữu thư mục /datas/shoeshop cho user shoeshop
+#     - sudo chown -R ${projectUser} ${projectPath}
+#     # -c có nghĩa là sau khi chạy su shoeshop thì sẽ chạy lệnh cd /datas/shoeshop && nohup java -jar shoe-ShoppingCart-0.0.1-SNAPSHOT.jar > app.log &
+#     - sudo su ${projectUser} -c "cd ${projectPath} && nohup java -jar ${projectJar} --server.port=${projectPort} > app.log &"
+#   tags:
+#     - gitlab-servers # tag của runner
+#   # only:
+#   #   - tags # chỉ chạy khi có tag

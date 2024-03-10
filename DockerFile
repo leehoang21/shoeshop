@@ -1,0 +1,15 @@
+#build
+FROM maven:3.6.1-jdk-8-alpine as build
+WORKDIR /app
+COPY . .
+RUN mvn clean install
+#deloy
+FROM alpine
+WORKDIR /run
+RUN adduser -D shoeshop
+RUN apk add openjdk8
+COPY --from=build /app/target/shoe-ShopingCart-0.0.1-SNAPSHOT.jar /run/shoe-ShopingCart-0.0.1-SNAPSHOT.jar
+RUN chown -R shoeshop:shoeshop /run
+USER shoeshop
+EXPOSE 8100
+ENTRYPOINT java -jar /run/shoe-ShopingCart-0.0.1-SNAPSHOT.jar
