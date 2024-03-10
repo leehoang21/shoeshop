@@ -6,6 +6,7 @@ variables:
 stages:
   - buildAndPush
   - deloy
+  - showlog
 buildAndPush: # tên của job
   stage: buildAndPush
   # trước khi chạy lệnh docker build và docker push thì cần phải đăng nhập vào docker registry
@@ -18,18 +19,29 @@ buildAndPush: # tên của job
     - gitlab-servers # tag của runner
   only:
     - tags # chỉ chạy khi có tag
-# deloy: # tên của job
-#   stage: deloy
-#   variables:
-#     GIT_STRATEGY: none
-#   script:
-#     # chuyển file jar vào thư mục /datas/shoeshop
-#     - sudo cp target/${projectJar} ${projectPath}
-#     # chuyển quyền sở hữu thư mục /datas/shoeshop cho user shoeshop
-#     - sudo chown -R ${projectUser} ${projectPath}
-#     # -c có nghĩa là sau khi chạy su shoeshop thì sẽ chạy lệnh cd /datas/shoeshop && nohup java -jar shoe-ShoppingCart-0.0.1-SNAPSHOT.jar > app.log &
-#     - sudo su ${projectUser} -c "cd ${projectPath} && nohup java -jar ${projectJar} --server.port=${projectPort} > app.log &"
-#   tags:
-#     - gitlab-servers # tag của runner
-#   # only:
-#   #   - tags # chỉ chạy khi có tag
+deloy: # tên của job
+  stage: deloy
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - docker login -u ${registry_user} -p ${registry_password} ${registry_url}
+  script:
+    - docker pull ${dockerImage}
+    - docker rm -f ${CI_PROJECT_NAME}
+    - docker run --name ${CI_PROJECT_NAME} -dp 8080:8080 ${dockerImage}
+  tags:
+    - gitlab-servers # tag của runner
+  only:
+    - tags # chỉ chạy khi có tag
+
+showlog:
+  stage: showlog
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - sleep 20
+    - docker logs ${CI_PROJECT_NAME}
+  tags:
+    - gitlab-servers # tag của runner
+  only:
+    - tags # chỉ chạy khi có tag
