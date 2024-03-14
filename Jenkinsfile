@@ -1,13 +1,12 @@
 pipeline {
     /* groovylint-disable-next-line NglParseError */
     // chỉ đinh agent
-
     agent {
         label 'hoang-server'
     }
     environment {
         appUser = 'shoeshop'
-        appName = 'shoe-ShopingCart'
+        appName = 'shoe-ShoppingCart'
         appVersion = '0.0.1-SNAPSHOT'
         appType = 'jar'
         processName = "${appName}-${appVersion}.${appType}"
