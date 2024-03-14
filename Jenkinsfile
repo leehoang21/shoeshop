@@ -2,7 +2,7 @@ pipeline {
     /* groovylint-disable-next-line NglParseError */
     // chỉ đinh agent
     agent {
-        label 'lab-server'
+        label 'hoang-server'
     }
     environment {
         appUser = 'shoeshop'
