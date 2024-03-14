@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         appUser = 'shoeshop'
-        appName = 'shoe-ShoppingCart'
+        appName = 'shoe-ShopingCart'
         appVersion = '0.0.1-SNAPSHOT'
         appType = 'jar'
         processName = "${appName}-${appVersion}.${appType}"
