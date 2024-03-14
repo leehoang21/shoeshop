@@ -1,7 +1,6 @@
 pipeline {
     /* groovylint-disable-next-line NglParseError */
     // chỉ đinh agent
-    //
     agent {
         label 'hoang-server'
     }
